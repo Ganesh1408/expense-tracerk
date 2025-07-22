@@ -197,8 +197,8 @@ p {
   font-size: 14px;
 }
 .transactions-container {
-  height: 480px;
-  max-height: 410px;
+  height: 100vh;
+  /* max-height: 410px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -327,7 +327,6 @@ p {
   }
 
   .transactions-container {
-    height: 480px;
     max-height: 260px;
     padding-top: 60px;
     position: relative;
