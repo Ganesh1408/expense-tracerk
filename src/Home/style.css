@@ -1,0 +1,367 @@
+body,
+#root,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+.popup-overlay {
+  position: fixed;
+  top: 10;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.form-container {
+  height: 360px;
+  width: 300px;
+  border: 1px solid grey;
+  border-radius: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px;
+  z-index: 1000;
+  margin: auto;
+  background-color: grey;
+}
+input {
+  height: 30px;
+  width: 100%;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+label {
+  font-size: 20px;
+  color: white;
+}
+.submit-button {
+  height: 36px;
+  width: 126px;
+  margin: auto;
+  background-color: #2855b5;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+}
+.icon {
+  height: 30px;
+  width: 30px;
+  color: white;
+  object-fit: contain;
+}
+.Home-container {
+  background-color: #3f3c3c;
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+  position: relative;
+  overflow: hidden;
+}
+.tracker-heading {
+  font-size: 22px;
+  color: white;
+}
+.header {
+  display: flex;
+  justify-content: space-around;
+  /* padding:5px; */
+  align-items: center;
+  gap: 8px;
+  /* width:100vw; */
+  height: 40px;
+  margin: 10px;
+}
+.footer {
+  background-color: black;
+  height: 70px;
+  width: 340px;
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 5px;
+  position: absolute;
+  bottom: 10px;
+}
+.search-box{
+  width:200px;
+  height:60px;
+  position: relative;
+  border-radius:8px;
+  
+  
+}
+.footer-icon {
+  height: 24px;
+  width: 24px;
+}
+.footer-button {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  background-color: #2256bd;
+  border: none;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 30px;
+  color: white;
+  margin-top: 10px;
+}
+.balance {
+  height: 60px;
+  width: 410px;
+  margin: 20px auto;
+  border-radius: 60px;
+  background-color: black;
+  /* opacity: 0.5; */
+  /* color:white; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.balance-text {
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  /* opacity: 1; */
+}
+
+.positive-text {
+  color: green;
+  font-weight: bold;
+  font-size: 24px;
+}
+.negative-text {
+  color: red;
+  font-weight: bold;
+  font-size: 24px;
+}
+.balance-amount {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+.graph {
+  height: 223px;
+  width: 410px;
+  background-color: black;
+  /* opacity: 0.6; */
+  border-radius: 24px;
+  margin: auto;
+  padding-top: 1px;
+}
+.toggle-buttons {
+  height: 44px;
+  width: 242px;
+  background-color: white;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  margin-top: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+p {
+  color: black;
+  font-weight: 600;
+  font-size: 10px;
+}
+.active {
+  padding: 8px 0px;
+
+  width: 100px;
+  background-color: black;
+  /* margin:4px; */
+  border-radius: 18px;
+  color: white;
+}
+.income-type {
+  height: 30px;
+  width: 100%;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.transactions-container {
+  height: 480px;
+  max-height: 410px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  padding-top: 60px;
+  position: relative;
+}
+
+.transaction-container-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  width: 300px;
+  border-radius: 20px;
+  margin: 5px;
+  background-color: black;
+  color: white;
+  padding: 0px 20px;
+  z-index: 0;
+}
+.headings-container {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 360px;
+  z-index: 1;
+  padding-top: 10px;
+}
+.item-heading {
+  font-size: 24px;
+  color: white;
+}
+
+.income {
+  color: green;
+  font-size: 20px;
+}
+.expense {
+  color: red;
+  font-size: 20px;
+}
+
+@media screen and (min-width: 567px) {
+  .icon {
+    height: 30px;
+    width: 30px;
+    color: white;
+    object-fit: contain;
+  }
+
+  .tracker-heading {
+    font-size: 22px;
+    color: white;
+  }
+  .header {
+    display: flex;
+    justify-content: space-around;
+    /* padding:5px; */
+    align-items: center;
+    gap: 8px;
+    /* width:100vw; */
+    height: 40px;
+    margin: 10px;
+  }
+  .footer {
+    background-color: black;
+    height: 70px;
+    width: 80%;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+    position: absolute;
+    bottom: 10px;
+  }
+  .footer-icon {
+    height: 24px;
+    width: 24px;
+  }
+  .footer-button {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    background-color: #2256bd;
+    border: none;
+    position: absolute;
+    bottom: 10px;
+    right: 160px;
+    font-size: 30px;
+    color: white;
+    margin-top: 10px;
+  }
+  .balance {
+    width: 80%;
+    justify-content: space-between;
+    padding: 10px 15px;
+  }
+  .balance-text {
+    font-size: 28px;
+  }
+
+  .graph {
+    width: 80%;
+    border-radius: 14px;
+
+    padding-top: 1px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .toggle-buttons {
+    width: 600px;
+  }
+  p {
+    color: black;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .active {
+    padding: 10px 10px;
+  }
+
+  .transactions-container {
+    height: 480px;
+    max-height: 260px;
+    padding-top: 60px;
+    position: relative;
+    margin-right: 40px;
+  }
+  .input{
+    width:180px;
+    height:30px;
+    margin-top:20px;
+  }
+
+  .transaction-container-items {
+    width: 80%;
+    border-radius: 20px;
+    margin-left: 90px;
+
+    /* opacity: 0.6; */
+  }
+  .headings-container {
+    width: 70%;
+    top: 370px;
+    padding-top: 16px;
+  }
+  .item-heading {
+    font-size: 24px;
+    color: white;
+  }
+
+  .income {
+    color: green;
+    font-size: 20px;
+  }
+  .expense {
+    color: red;
+    font-size: 20px;
+  }
+}
