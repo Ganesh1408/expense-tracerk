@@ -201,11 +201,26 @@ p {
   /* max-height: 410px; */
   display: flex;
   flex-direction: column;
+  /* justify-content: center; */
   align-items: center;
   overflow-y: scroll;
   padding-top: 60px;
   position: relative;
 }
+
+.DATE-PICKER{
+  color:white;
+  width:200px;
+  font-size:16px;
+  
+}
+.react-daterange-picker__calendar-button svg {
+  stroke: white; 
+}
+.react-daterange-picker__clear-button svg {
+  stroke: #dc3545; 
+}
+
 
 .transaction-container-items {
   display: flex;
@@ -214,25 +229,36 @@ p {
   height: 50px;
   width: 300px;
   border-radius: 20px;
-  margin: 5px;
   background-color: black;
   color: white;
   padding: 0px 20px;
   z-index: 0;
+  margin-top:40px;
+  
+  
 }
 .headings-container {
   width: 80%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
   position: fixed;
   top: 360px;
   z-index: 1;
-  padding-top: 10px;
+  margin-top:20px;
+  margin-bottom:20px;
+  
+  
 }
 .item-heading {
-  font-size: 24px;
+  font-size: 18px;
   color: white;
+}
+.icon{
+  margin-top: 40px;
+  height:40px;
+  width:40px;
 }
 
 .income {
@@ -251,6 +277,12 @@ p {
     color: white;
     object-fit: contain;
   }
+
+  .icon{
+    margin-top: 20px;
+  height:40px;
+  width:40px;
+}
 
   .tracker-heading {
     font-size: 22px;
@@ -342,13 +374,17 @@ p {
     width: 80%;
     border-radius: 20px;
     margin-left: 90px;
+    margin-top:20px;
 
     /* opacity: 0.6; */
   }
+  
   .headings-container {
+    flex-direction: row;
     width: 70%;
     top: 370px;
     padding-top: 16px;
+
   }
   .item-heading {
     font-size: 24px;
@@ -363,4 +399,67 @@ p {
     color: red;
     font-size: 20px;
   }
+}
+
+
+/* Calendar container */
+.react-calendar {
+  width: 100%;
+  max-width: 300px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: sans-serif;
+}
+
+/* Navigation buttons (month/year arrows) */
+.react-calendar__navigation button {
+  color: #007bff;
+  min-width: 40px;
+  background: none;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.react-calendar__navigation button:disabled {
+  color: #ccc;
+}
+
+/* Day tiles */
+.react-calendar__tile {
+  border-radius: 6px;
+  padding: 10px 6px;
+  background: none;
+  transition: background 0.2s ease;
+}
+
+.react-calendar__tile:hover {
+  background: #f0f0f0;
+  cursor: pointer;
+}
+
+/* Today */
+.react-calendar__tile--now {
+  background: #e6f2ff;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Selected date */
+.react-calendar__tile--active {
+  background: #007bff;
+  color: white;
+}
+
+/* Date range (if used) */
+.react-calendar__tile--rangeStart,
+.react-calendar__tile--rangeEnd {
+  background: #0056b3;
+  color: white;
+}
+
+.react-calendar__tile--range {
+  background: #cce5ff;
 }

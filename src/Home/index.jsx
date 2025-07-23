@@ -1,5 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
+import DateRangePicker from '@wojtekmaj/react-daterange-picker';
+import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
+
+
 
 import {
   LineChart,
@@ -24,10 +28,17 @@ function Home() {
     const savedTransaction = localStorage.getItem("trans");
     return savedTransaction ? JSON.parse(savedTransaction) : [];
   });
+
   const [active, setActive] = useState("DAILY");
   const [monthWise, setMonthWise] = useState({});
-  
-  const [searchInput,setSearchInput] = useState("")
+
+  const [searchInput, setSearchInput] = useState("");
+    
+  const [value,onChange] = useState(new Date(),new Date())
+
+  console.log(value)
+
+
 
   const submit = (e) => {
     e.preventDefault();
@@ -118,14 +129,14 @@ function Home() {
     console.log("monthWise updated:", monthWise);
   }, [monthWise]);
 
-  const yearWise ={}
+  const yearWise = {};
   Object.entries(monthWise).forEach(([monthKey, transactions]) => {
-  const [year] = monthKey.split("-");
-  if (!yearWise[year]) {
-    yearWise[year] = [];
-  }
-  yearWise[year].push(...transactions);
-});
+    const [year] = monthKey.split("-");
+    if (!yearWise[year]) {
+      yearWise[year] = [];
+    }
+    yearWise[year].push(...transactions);
+  });
 
   const month_name = {
     "01": "jan",
@@ -137,47 +148,79 @@ function Home() {
     "07": "july",
     "08": "Aug",
     "09": "sep",
-    '10': "Oct",
-    '11': "Nov",
-    '12': "Dec",
+    10: "Oct",
+    11: "Nov",
+    12: "Dec",
   };
   console.log(Object.entries(monthWise));
 
-  const openSearchDialog=()=>{
-    const dialog=document.getElementById("searchDialog");
-    if(dialog){
-      dialog.showModal()
+  const openSearchDialog = () => {
+    const dialog = document.getElementById("searchDialog");
+    if (dialog) {
+      dialog.showModal();
     }
-  }
+  };
 
-  const closeDialog=()=>{
-    const dialog=document.getElementById("searchDialog");
-    if(dialog){
-      dialog.close()
+  const closeDialog = () => {
+    const dialog = document.getElementById("searchDialog");
+    if (dialog) {
+      dialog.close();
     }
-  }
+  };
 
-  const filteredData=transactions.filter((item)=>String(item.transaction||"").toLowerCase().includes(searchInput.toLowerCase()))
+  
 
-      // if (filteredData.length === 0){
-      //   return<p>no data found</p>
-      // }
+  // if (filteredData.length === 0){
+  //   return<p>no data found</p>
+  // }
+  //filter data by range 
+
+  function normalizeDate(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+ const filteredData = transactions.filter((item) => {
+
+      const matchedSearch =String(item.transaction || "")
+      .toLowerCase()
+      .includes(searchInput.toLowerCase())
+
+  const txnDate = normalizeDate(new Date(item.date));
+  const start = Array.isArray(value) && value[0] ? normalizeDate(new Date(value[0])) : null;
+  const end = Array.isArray(value) && value[1] ? normalizeDate(new Date(value[1])) : null;
+
+   const matchedDate =(!start || txnDate >= start) && (!end || txnDate <= end);
+   return matchedSearch &&matchedDate
+});
+
+
+
   return (
     <>
       <div className="Home-container">
         <header className="header">
           <img src="/icon/83-menu-2.png" alt="menu" className="icon" />
           <h2 className="tracker-heading">Daily Expense Tracker</h2>
-          <img src="/icon/Search.png" alt="search" className="icon" onClick={openSearchDialog}/>
+          <img
+            src="/icon/Search.png"
+            alt="search"
+            className="icon"
+            onClick={openSearchDialog}
+          />
         </header>
         <dialog id="searchDialog" className="search-box">
-          <button style={{position:"absolute",right:5,top:5,display:'block'}} onClick={closeDialog}>X</button>
+          <button
+            style={{ position: "absolute", right: 5, top: 5, display: "block" }}
+            onClick={closeDialog}
+          >
+            X
+          </button>
           <input
             type="search"
             placeholder="enter search item"
             className="input"
             value={searchInput}
-            onChange={(e)=>setSearchInput(e.target.value)}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
         </dialog>
 
@@ -262,7 +305,7 @@ function Home() {
             />
           </div>
         </div>
-        <div className="graph">
+       <div className="graph">
           <div className="toggle-buttons" onClick={handleOnClick}>
             <p
               data-value="DAILY"
@@ -285,57 +328,63 @@ function Home() {
               YEARLY
             </p>
           </div>
-          <div style={{ width: "318", height: "161px", marginTop: "10px" }}>
-            <ResponsiveContainer>
-              <LineChart data={mergeData}>
-                <CartesianGrid stroke="#444" strokeDasharray="3 3" />
-                <XAxis dataKey="day" stroke="#fff" />
-                <YAxis stroke="#fff" domain={[0, "dataMax"]} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#222",
-                    borderRadius: "5px",
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="income"
-                  stroke="green"
-                  strokeWidth="3"
-                  dot={{ r: 5, strokeWidth: 2, fill: "#fff" }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="expense"
-                  stroke="red"
-                  strokeWidth="3"
-                  dot={{ r: 5, strokeWidth: 2, fill: "#fff" }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="transactions-container">
-          {transactions.length > 0 ? (
-            <div className="headings-container">
-              <h2 className="item-heading">Transactions</h2>
-              <p
-                style={{
-                  color: "white",
-                  fontSize: "14px",
-                }}
-                
-              >
-                SeeAll
-              </p>
+          {filteredData.length !== 0 ? (
+            <div style={{ width: "100%", height: "161px", marginTop: "10px" }}>
+              <ResponsiveContainer>
+                <LineChart data={mergeData}>
+                  <CartesianGrid stroke="#444" strokeDasharray="3 3" />
+                  <XAxis dataKey="day" stroke="#fff" />
+                  <YAxis stroke="#fff" domain={[0, "dataMax"]} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#222",
+                      borderRadius: "5px",
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="income"
+                    stroke="green"
+                    strokeWidth="3"
+                    dot={{ r: 5, strokeWidth: 2, fill: "#fff" }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="expense"
+                    stroke="red"
+                    strokeWidth="3"
+                    dot={{ r: 5, strokeWidth: 2, fill: "#fff" }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           ) : (
             ""
           )}
-          {active === "DAILY" ?(
-            
-             filteredData.length ===0?<p>no data found</p>: filteredData.map((item, index) => (
+        </div>
+        <div className="transactions-container">
+        
+            <div className="headings-container">
+              <h2 className="item-heading">Transactions</h2>
+              
+              <div>
+              <span style={{paddingRight:"10px",color:"white",fontWeight:'500'}}>Filter By Date</span>
+              <DateRangePicker
+                value={value}
+                onChange={onChange}
+                className="DATE-PICKER"
+                 format="yyyy-MM-dd"
+                 
+              />
+              </div>
+            </div>
+          
+
+          {active === "DAILY" ? (
+            filteredData.length === 0 ? (
+              <p style={{ fontSize: "26px", color: "white" }}>no data found</p>
+            ) : (
+              filteredData.map((item, index) => (
                 <div
                   key={index}
                   style={{
@@ -345,7 +394,6 @@ function Home() {
                     width: "90%",
                   }}
                 >
-                    
                   <div className="transaction-container-items">
                     <span style={{ fontSize: "20px" }}>{item.transaction}</span>
                     <span
@@ -354,58 +402,58 @@ function Home() {
                       ₹{item.amount}
                     </span>
                   </div>
-                  
+
                   <MdDeleteForever
                     size="50px"
                     color="white"
+                    className="icon"
                     onClick={() => handleDelete(index)}
                   />
                 </div>
               ))
-             ) :active === "MONTHLY"?(
-                 Object.entries(monthWise).map(([monthKey, transaction]) => {
-                // const total = transaction.reduce((acc,curr)=>acc+Number(curr.amount),0)
-                const Month_Income = transaction
-                  .filter((item) => item.type === "income")
-                  .reduce((acc, curr) => acc + Number(curr.amount), 0);
-                const Month_expense = transaction
-                  .filter((item) => item.type === "expense")
-                  .reduce((acc, curr) => acc + Number(curr.amount), 0);
-                const total = Month_Income - Month_expense;
-                const [year, Month] = monthKey.split("-");
-                const MonthLabel = `${month_name[Month]} ${year}`;
-                return (
-                  <div className="transaction-container-items">
-                    <span style={{ fontSize: "20px" }}>{MonthLabel} </span>
-                    <span className={total < 0 ? "expense" : "income"}>
-                      {total}
-                    </span>
-                  </div>
-                );
-              })
             )
-              :(
-                 Object.entries(yearWise).map(([year, transaction]) => {
-                // const total = transaction.reduce((acc,curr)=>acc+Number(curr.amount),0)
-                const Year_Income = transaction
-                  .filter((item) => item.type === "income")
-                  .reduce((acc, curr) => acc + Number(curr.amount), 0);
-                const Year_Expense = transaction
-                  .filter((item) => item.type === "expense")
-                  .reduce((acc, curr) => acc + Number(curr.amount), 0);
-                const total = Year_Income-Year_Expense;
-                
-                
-                return (
-                  <div className="transaction-container-items">
-                    <span style={{ fontSize: "20px" }}>{year} </span>
-                    <span className={total < 0 ? "expense" : "income"}>
-                      {total}
-                    </span>
-                  </div>
-                );
-              })
-              )}
+          ) : active === "MONTHLY" ? (
+            Object.entries(monthWise).map(([monthKey, transaction]) => {
+              // const total = transaction.reduce((acc,curr)=>acc+Number(curr.amount),0)
+              const Month_Income = transaction
+                .filter((item) => item.type === "income")
+                .reduce((acc, curr) => acc + Number(curr.amount), 0);
+              const Month_expense = transaction
+                .filter((item) => item.type === "expense")
+                .reduce((acc, curr) => acc + Number(curr.amount), 0);
+              const total = Month_Income - Month_expense;
+              const [year, Month] = monthKey.split("-");
+              const MonthLabel = `${month_name[Month]} ${year}`;
+              return (
+                <div  className="transaction-container-items">
+                  <span style={{ fontSize: "20px" }}>{MonthLabel} </span>
+                  <span className={total < 0 ? "expense" : "income"}>
+                    {total}
+                  </span>
+                </div>
+              );
+            })
+          ) : (
+            Object.entries(yearWise).map(([year, transaction]) => {
+              // const total = transaction.reduce((acc,curr)=>acc+Number(curr.amount),0)
+              const Year_Income = transaction
+                .filter((item) => item.type === "income")
+                .reduce((acc, curr) => acc + Number(curr.amount), 0);
+              const Year_Expense = transaction
+                .filter((item) => item.type === "expense")
+                .reduce((acc, curr) => acc + Number(curr.amount), 0);
+              const total = Year_Income - Year_Expense;
+
+              return (
+                <div className="transaction-container-items">
+                  <span style={{ fontSize: "20px" }}>{year} </span>
+                  <span className={total < 0 ? "expense" : "income"}>
+                    {total}
+                  </span>
+                </div>
+              );
+            })
+          )}
         </div>
 
         <footer className="footer">
